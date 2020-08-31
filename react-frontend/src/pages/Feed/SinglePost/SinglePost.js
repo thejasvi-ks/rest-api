@@ -28,32 +28,34 @@ class SinglePost extends Component {
         }
       `
     };
-    fetch('http://localhost:8080/graphql', {
+
+    fetch("http://localhost:8080/graphql", {
       method: 'POST',
       headers: {
         Authorization: 'Bearer ' + this.props.token,
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json"
       },
       body: JSON.stringify(graphqlQuery)
     })
-      .then(res => {
-        return res.json();
-      })
-      .then(resData => {
-        if (resData.errors) {
-          throw new Error('Fetching post failed!');
-        }
-        this.setState({
-          title: resData.data.post.title,
-          author: resData.data.post.creator.name,
-          image: 'http://localhost:8080/' + resData.data.post.imageUrl,
-          date: new Date(resData.data.post.createdAt).toLocaleDateString('en-US'),
-          content: resData.data.post.content
-        });
-      })
-      .catch(err => {
-        console.log(err);
+    .then(res => {
+      return res.json();
+    })
+    .then(resData => {
+      if (resData.errors) {
+        // console.log(re);
+        throw new Error("Single Post fetching failed.!");
+      }
+      this.setState({
+        title: resData.data.post.title,
+        author: resData.data.post.creator.name,
+        image: 'http://localhost:8080/' + resData.data.post.imageUrl,
+        date: new Date(resData.data.post.createdAt).toLocaleDateString('en-US'),
+        content: resData.data.post.content
       });
+    })
+    .catch(err => {
+      console.log(err);
+    });
   }
 
   render() {
